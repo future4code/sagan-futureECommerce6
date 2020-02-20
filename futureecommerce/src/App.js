@@ -1,26 +1,70 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import styled from 'styled-components'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const DivPai = styled.div`
+
+display: grid;
+grid-template-rows: 1fr 9fr;
+width: 100%;
+height: 100%;
+
+`
+const Header = styled.div`
+width: 100%;
+height: 100%;
+`
+const Conteudo =styled.div`
+display: grid;
+grid-template-columns: 8fr 2fr;
+width: 100%;
+height: 100%;
+
+`
+const LateralEsquerda = styled.section`
+display:grid;
+grid-template-rows: 9fr 1fr;
+grid-template-columns: 1fr;
+width: 100%;
+height: 100%;
+`
+const LateralDireita = styled.section`
+width: 100%;
+height: 100%;
+`
+const Filtro = styled.div`
+width: 100%;
+height: 100%;
+`
+const ProdutosDisplay = styled.div`
+width: 100%;
+height: 100%;
+`
+
+class App extends Component  {
+  constructor(props){
+    super(props)
+    this.state={
+        mensagem: ''
+    }
+
+
+  }
+  render(){
+    return (
+
+      <DivPai>
+         <Header>Header</Header>
+         <Conteudo>Conteudo
+           <LateralEsquerda>lateral esquerda
+             <Filtro>Filtro</Filtro>
+             <ProdutosDisplay>Produtos display</ProdutosDisplay>
+           </LateralEsquerda>
+           <LateralDireita>lateral direita</LateralDireita>
+         </Conteudo>
+      </DivPai>
+    )
+  }
 }
-
+   
 export default App;
