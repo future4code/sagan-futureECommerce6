@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 import Produtos from './Components/Produtos.js'
+import Carrinho from './Components/Carrinho'
 
 
 const DivPai = styled.div`
@@ -46,7 +47,7 @@ class App extends Component {
     this.state = {
       mostraFiltro: false,
       mostraProdutos: true,
-      mostraCarrinho: false,
+      mostraCarrinho: true,
       mostraHeader: true,
       arrayDeProdutos: [
         {
@@ -54,7 +55,7 @@ class App extends Component {
           nome: "nave",
           valorProduto: 100.50,
           imgUrl: 'https://picsum.photos/200/200',
-          carrinho: 30
+          carrinho: 22
         },
         {
           id: 2,
@@ -65,9 +66,9 @@ class App extends Component {
         },
         {
           id: 3,
-          nome: "nave doida",
-          valorProduto: 1212.50,
-          imgUrl: 'https://picsum.photos/200/201',
+          nome: "nave 2d2d",
+          valorProduto: 3000,
+          imgUrl: 'https://picsum.photos/200/202',
           carrinho: 0
         }
       ]
@@ -87,19 +88,48 @@ class App extends Component {
   }
 
   adicionarCarrinho = (valorIndex) => {
-    const qtdNoCarrinho = this.state.arrayDeProdutos[valorIndex].carrinho
+    const arrayDeProdutosCopia = [...this.state.arrayDeProdutos]
+    console.log(arrayDeProdutosCopia[valorIndex].carrinho)
+    arrayDeProdutosCopia[valorIndex].carrinho = arrayDeProdutosCopia[valorIndex].carrinho + 1
+    console.log(arrayDeProdutosCopia[valorIndex].carrinho)
     this.setState({
-      arrayDeProdutos 
+      arrayDeProdutos: arrayDeProdutosCopia,
+    })
+  }
+
+  removerCarrinho = (valorIndex) => {
+
+    console.log(`Recebi: ${valorIndex}`)
+    const arrayDeProdutosCopia = [...this.state.arrayDeProdutos]
+    console.log(arrayDeProdutosCopia[valorIndex].carrinho)
+    arrayDeProdutosCopia[valorIndex].carrinho = 0
+    console.log(arrayDeProdutosCopia[valorIndex].carrinho)
+    this.setState({
+      arrayDeProdutos: arrayDeProdutosCopia,
     })
   }
 
   render() {
+    const arrayDeProdutosCopia = [...this.state.arrayDeProdutos]
+    const arrayCarrinho = arrayDeProdutosCopia.filter(produto => {
+      return produto.carrinho > 0
+    })
+
     const headerContent = (
       <p>header</p>
     )
     const filtroContent = (
       <p>filtro</p>
     )
+    
+    const somaCarrinho = (arrayCarrinho) => {
+      let soma = 0
+      for (let i = 0; i < arrayCarrinho.length; i++) {
+          soma += arrayCarrinho[i].valorProduto.reduce((a, b) => a + b, 0);
+          return soma
+      }
+    }
+
     const produtosContent = (
       <div>
         {this.state.arrayDeProdutos.map(elemento => {
@@ -118,7 +148,21 @@ class App extends Component {
       </div>
     )
     const carrinhoContent = (
-      <p>carrinho</p>
+      <div>
+        {arrayCarrinho.map(elemento => {
+          return (
+            <Carrinho
+              key={this.state.arrayDeProdutos.indexOf(elemento)}
+              id={elemento.id}
+              imgUrl={elemento.imgUrl}
+              nome={elemento.nome}
+              valorProduto={elemento.valorProduto}
+              indexProduto={this.state.arrayDeProdutos.indexOf(elemento)}
+              botaoRemoveC={this.removerCarrinho}
+            />
+          )
+        })}
+      </div>
     )
 
     return (
