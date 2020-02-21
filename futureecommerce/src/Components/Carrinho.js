@@ -44,10 +44,11 @@ class Carrinho extends Component {
 						<ValorEQtd>
 							<p>{this.props.valorProduto}</p>
 							<p>{this.props.qtd}</p>
+							<p>{this.props.quantidadeItem}</p>
 						</ValorEQtd>
 						<ContainerBotoes>
-							<Botao> + </Botao>
-							<Botao> - </Botao>
+							<Botao onClick={() => {this.props.botaoAdiciona(this.props.indexProduto)}}>+</Botao>
+							<Botao onClick={() => {this.props.botaoDiminui(this.props.indexProduto)}}>-</Botao>
 							<Botao onClick={() => {this.props.botaoRemoveC(this.props.indexProduto)}}>Remover</Botao>
 						</ContainerBotoes>
 					</ContainerValorEQtd>
