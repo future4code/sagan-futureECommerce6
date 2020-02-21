@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 
 const ProdutoContainer = styled.div`
-  /* border: 1pt solid black; */
   display: flex;
   flex-direction: column;
 margin: 0;
@@ -10,16 +9,24 @@ padding: 0;
 width: 100%;
   img {
     width: 100%;
+    height: 100%;
     border-radius: 5px 5px 0 0;
     }
 `
 const InfoProduto = styled.div`
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 p {
   margin: 0;
   padding: 0;
   border: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
   &:first-child {
     font-weight: bold;
     text-transform: uppercase;
@@ -27,8 +34,6 @@ p {
   background-color: #247BA0;
   color: white;
 }
-
-  
 `
 const BotaoAdicionar = styled.button`
 background-color: #001021;
@@ -44,8 +49,6 @@ border-radius: 0 0 5px 5px;
 class Produtos extends Component {
   constructor(props) {
     super(props)
-
-
   }
   render() {
     return (

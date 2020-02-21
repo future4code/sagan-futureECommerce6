@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Produtos from './Components/Produtos.js'
 import Carrinho from './Components/Carrinho'
 
-
 const DivPai = styled.div`
 background-color: #EAF2EF;
 width: 100%;
@@ -14,14 +13,18 @@ background-color: #001021;
 display: flex;
 justify-content: space-between;
 color: #EAF2EF;
+padding: 20px;
+`
+const ImagemCarrinho = styled.img`
+width: 25%;
+height: 25%;
 `
 const Conteudo = styled.div`
-display: inline-flex;
+display: flex;
 `
 const LateralEsquerda = styled.div`
 `
 const LateralDireita = styled.div`
-max-width: 50%;
 `
 const FiltroPai = styled.div`
 display: flex;
@@ -34,9 +37,7 @@ display: flex;
 flex-direction: row;
 margin-left: 10px;
 align-items: center;
-
 img {margin-left: 10px};
-
 `
 const ProdutosDisplay = styled.div`
 display: flex;
@@ -54,7 +55,12 @@ box-shadow:
   0 41.8px 33.4px rgba(0, 0, 0, 0.05),
   0 100px 80px rgba(0, 0, 0, 0.07);
 `
-
+const CardCart = styled.div`
+margin: 5px;
+display: flex;
+width: 50%;
+border-radius: 5px;
+`
 
 class App extends Component {
   constructor(props) {
@@ -72,28 +78,28 @@ class App extends Component {
       arrayDeProdutos: [
         {
           id: 1,
-          nome: "Capsula do foguete da SpaceX",
+          nome: "Capsula do foguete da SpaceX ",
           valorProduto: 5234.79,
           imgUrl: require("./img/img1.jpg"),
           carrinho: 0
           },
           {
           id: 2,
-          nome: "Carro explorador de planetas",
+          nome: "Carro explorador",
           valorProduto: 3459.30,
           imgUrl: require("./img/img2.jpg"),
           carrinho: 0
           },
           {
           id: 3,
-          nome: "Foguete de Guerra ",
+          nome: "Foguete de Guerra Usado ",
           valorProduto: 7345.12,
           imgUrl: require("./img/img3.jpg"),
           carrinho: 0
           },
           {
           id: 4,
-          nome: "Onibus espacial dos EUA - Promoção",
+          nome: "Onibus espacial EUA",
           valorProduto: 2999.99,
           imgUrl: require("./img/img4.jpg"),
           carrinho: 0
@@ -107,21 +113,21 @@ class App extends Component {
           },
           {
           id: 6,
-          nome: "Onibus Espacial de Guerra InterGalática",
+          nome: "Onibus Espacial de Guerra",
           valorProduto: 4397.47,
           imgUrl: require("./img/img6.png"),
           carrinho: 0
           },
           {
           id: 7,
-          nome: "Onibus Espacial Standart - Para toda Família",
+          nome: "Onibus Espacial Standart",
           valorProduto: 1499.99,
           imgUrl: require("./img/img7.jpg"),
           carrinho: 0
           },
           {
           id: 8,
-          nome: "Foguete super Fino para Exploração",
+          nome: "Foguete para Exploração",
           valorProduto: 7889.54,
           imgUrl: require("./img/img8.jpg"),
           carrinho: 0
@@ -129,6 +135,29 @@ class App extends Component {
       ]
     }
   }
+
+  componentDidMount() {
+    const dadosArmazenadosString = localStorage.getItem("stateDeProdutos");
+    const novoEstado = JSON.parse(dadosArmazenadosString);
+    this.setState(novoEstado);
+    this.setState({
+      mostraFiltro: false,
+      mostraProdutos: true,
+      mostraCarrinho: false,
+      mostraHeader: true,
+      inputMenor: "",
+      inputMaior: "",
+      inputPesquisa: "",
+      produtoPesquisa: [],
+      limpaPesquisa: false,
+    })
+    }
+  componentDidUpdate() {
+    const limpaStorage = {};
+    localStorage.setItem("stateDeProdutos", limpaStorage);
+    const estadoComoString = JSON.stringify(this.state);
+    localStorage.setItem("stateDeProdutos", estadoComoString);
+    } 
 
   botaoMostraFiltro = () => {
     this.setState({
@@ -159,12 +188,8 @@ class App extends Component {
   }
 
   removerCarrinho = (valorIndex) => {
-
-    console.log(`Recebi: ${valorIndex}`)
     const arrayDeProdutosCopia = [...this.state.arrayDeProdutos]
-    console.log(arrayDeProdutosCopia[valorIndex].carrinho)
     arrayDeProdutosCopia[valorIndex].carrinho = 0
-    console.log(arrayDeProdutosCopia[valorIndex].carrinho)
     this.setState({
       arrayDeProdutos: arrayDeProdutosCopia,
     })
@@ -211,9 +236,9 @@ class App extends Component {
   inputPesquisa = (event) => {
     const arrayDeProdutosCopia = [...this.state.arrayDeProdutos]
     const produtoPesquisa = arrayDeProdutosCopia.filter(produto => 
-      produto.nome.includes(this.state.inputPesquisa))
+      produto.nome.toLowerCase().includes(this.state.inputPesquisa))
       this.setState({
-        inputPesquisa: event.target.value,
+        inputPesquisa: event.target.value.toLowerCase(),
         produtoPesquisa: produtoPesquisa,
         mostraProdutos: false,
         limpaPesquisa: true,
@@ -308,6 +333,7 @@ class App extends Component {
       <div>
         {arrayCarrinho.map(elemento => {
           return (
+            <CardCart>
             <Carrinho
               key={this.state.arrayDeProdutos.indexOf(elemento)}
               id={elemento.id}
@@ -320,6 +346,7 @@ class App extends Component {
               botaoAdiciona={this.adicionarCarrinho}
               botaoDiminui={this.diminuiCarrinho}
             />
+            </CardCart>
           )
         })}
       </div>
@@ -327,15 +354,13 @@ class App extends Component {
 
     const headerCartContent =(
       <div onClick={this.botaoMostraCarrinho}>
-        <img src={require("./img/cart.png")}/>
+        <ImagemCarrinho src={require("./img/cart.png")}/>
         <p>Valor do carrinho:</p>
         <p>R$ {somaCarrinho.toFixed(2).toString().replace(".",",")}</p>
       </div>
     )
 
-
     return (
-
       <DivPai>
         <Header>
           <div>{this.state.mostraHeader ? headerContent : ''}</div>
