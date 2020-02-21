@@ -2,18 +2,44 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 
 const ProdutoContainer = styled.div`
-  border: 1pt solid black;
+  /* border: 1pt solid black; */
   display: flex;
   flex-direction: column;
+margin: 0;
+padding: 0;
+width: 100%;
+  img {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    }
 `
 const InfoProduto = styled.div`
+p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  &:first-child {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  background-color: #247BA0;
+  color: white;
+}
+
   
 `
-const Imagem = styled.img`
-  max-width: 100%;
+const BotaoAdicionar = styled.button`
+background-color: #001021;
+color: #EAF2EF;
+width: 100%;
+height: 100%;
+margin: 0;
+padding: 10px;
+border: 0;
+border-radius: 0 0 5px 5px;
 `
-
-const BotaoAdicionar = styled.button``
 
 class Produtos extends Component {
   constructor(props) {
@@ -25,11 +51,11 @@ class Produtos extends Component {
     return (
       <ProdutoContainer>
         <div>
-          <Imagem src={this.props.imgUrl} />
+          <img src={this.props.imgUrl} />
         </div>
         <InfoProduto>
           <p>{this.props.nome}</p>
-          <p>{this.props.valorProduto}</p>
+          <p>R$ {this.props.valorProduto}</p>
           <BotaoAdicionar onClick={() => {this.props.botaoAdicionaC(this.props.indexProduto)}}>Adicionar ao Carrinho</BotaoAdicionar>
         </InfoProduto>
       </ProdutoContainer>
