@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 
 const ProdutoContainer = styled.div`
-  border: 1pt solid black;
-  display: flex;
-  flex-direction: column;
 `
 const InfoProduto = styled.div`
   
 `
 const Imagem = styled.img`
-  max-width: 100%;
 `
 
 const BotaoAdicionar = styled.button``
@@ -18,8 +14,6 @@ const BotaoAdicionar = styled.button``
 class Produtos extends Component {
   constructor(props) {
     super(props)
-
-
   }
   render() {
     return (
