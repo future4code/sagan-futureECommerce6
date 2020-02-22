@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 
 const ProdutoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+display: flex;
+flex-direction: column;
 margin: 0;
 padding: 0;
 width: 100%;
@@ -18,7 +18,7 @@ const InfoProduto = styled.div`
   align-items: center;
   align-content: center;
   text-align: center;
-p {
+p,h5 {
   margin: 0;
   padding: 0;
   border: 0;
@@ -28,7 +28,6 @@ p {
   align-content: center;
   text-align: center;
   &:first-child {
-    font-weight: bold;
     text-transform: uppercase;
   }
   background-color: #247BA0;
@@ -45,6 +44,17 @@ padding: 10px;
 border: 0;
 border-radius: 0 0 5px 5px;
 `
+const DivBotao = styled.div`
+background-color: #001021;
+display: flex;
+img {
+  width: 10%;
+  height: 10%;
+  align-self: center;
+  padding-left: 20px;
+}
+border-radius: 0 0 5px 5px;
+`
 
 class Produtos extends Component {
   constructor(props) {
@@ -57,9 +67,12 @@ class Produtos extends Component {
           <img src={this.props.imgUrl} />
         </div>
         <InfoProduto>
-          <p>{this.props.nome}</p>
-          <p>R$ {this.props.valorProduto}</p>
-          <BotaoAdicionar onClick={() => {this.props.botaoAdicionaC(this.props.indexProduto)}}>Adicionar ao Carrinho</BotaoAdicionar>
+          <div><h5>{this.props.nome}</h5></div>
+          <div><p>R$ {this.props.valorProduto}</p></div>
+          <DivBotao>
+            <img src={require("../img/cartadd.png")}/>
+            <BotaoAdicionar onClick={() => {this.props.botaoAdicionaC(this.props.indexProduto)}}>Adicionar ao Carrinho</BotaoAdicionar>
+          </DivBotao>
         </InfoProduto>
       </ProdutoContainer>
     )
