@@ -7,6 +7,8 @@ const DivPai = styled.div`
 background-color: #EAF2EF;
 width: 100%;
 height: 100vh;
+max-width: 1280px;
+max-height: 720px;
 `
 const Header = styled.div`
 background-color: #001021;
@@ -19,12 +21,12 @@ const ImagemCarrinho = styled.img`
 width: 25%;
 height: 25%;
 `
-const Conteudo = styled.div`
+const Divflex = styled.div`
 display: flex;
-`
-const LateralEsquerda = styled.div`
-`
-const LateralDireita = styled.div`
+
+@media screen and (max-width: 600px) {
+flex-direction: column-reverse;  
+}
 `
 const FiltroPai = styled.div`
 display: flex;
@@ -39,27 +41,18 @@ margin-left: 10px;
 align-items: center;
 img {margin-left: 10px};
 `
-const ProdutosDisplay = styled.div`
-display: flex;
-`
 const Card = styled.div`
 margin: 10px;
 display: inline-flex;
-width: 20%;
+width: 23%;
 border-radius: 5px;
-box-shadow:
-  0 2.8px 2.2px rgba(0, 0, 0, 0.02),
-  0 6.7px 5.3px rgba(0, 0, 0, 0.028),
-  0 12.5px 10px rgba(0, 0, 0, 0.035),
-  0 22.3px 17.9px rgba(0, 0, 0, 0.042),
-  0 41.8px 33.4px rgba(0, 0, 0, 0.05),
-  0 100px 80px rgba(0, 0, 0, 0.07);
+box-shadow: 1pt 2pt 5pt gray;
+@media screen and (max-width: 600px) {
+  width: 100%;
+}
 `
-const CardCart = styled.div`
-margin: 5px;
-display: flex;
-width: 50%;
-border-radius: 5px;
+const CartCard = styled.div`
+width: 100%;
 `
 
 class App extends Component {
@@ -143,7 +136,7 @@ class App extends Component {
     this.setState({
       mostraFiltro: false,
       mostraProdutos: true,
-      mostraCarrinho: false,
+      mostraCarrinho: true,
       mostraHeader: true,
       inputMenor: "",
       inputMaior: "",
@@ -267,6 +260,7 @@ class App extends Component {
       return produto.carrinho > 0
     })
     const somaCarrinho = arrayCarrinho.map(item => item.valorProduto * item.carrinho).reduce((soma, subtotal) => subtotal + soma,0)
+    const qtdCarrinho = arrayCarrinho.map(item => 1 * item.carrinho).reduce((soma, subtotal) => subtotal + soma,0)
 
     const headerContent = (
       <div>
@@ -330,10 +324,9 @@ class App extends Component {
     )
 
     const carrinhoContent = (
-      <div>
+      <CartCard>
         {arrayCarrinho.map(elemento => {
           return (
-            <CardCart>
             <Carrinho
               key={this.state.arrayDeProdutos.indexOf(elemento)}
               id={elemento.id}
@@ -346,16 +339,16 @@ class App extends Component {
               botaoAdiciona={this.adicionarCarrinho}
               botaoDiminui={this.diminuiCarrinho}
             />
-            </CardCart>
           )
         })}
-      </div>
+      </CartCard>
     )
 
     const headerCartContent =(
       <div onClick={this.botaoMostraCarrinho}>
         <ImagemCarrinho src={require("./img/cart.png")}/>
-        <p>Valor do carrinho:</p>
+        <p>Carrinho de compras:</p>
+      <p>{qtdCarrinho}{qtdCarrinho === 1 ? " item" : " itens"}</p>
         <p>R$ {somaCarrinho.toFixed(2).toString().replace(".",",")}</p>
       </div>
     )
@@ -366,32 +359,32 @@ class App extends Component {
           <div>{this.state.mostraHeader ? headerContent : ''}</div>
           <div>{this.state.mostraHeader ? headerCartContent : ''}</div>
         </Header>
-        <Conteudo>
-          <LateralEsquerda>
+        <Divflex>
+          <div>
             <FiltroPai>
               <FiltroOpcao>
-              <div>
-                <select onChange={this.organizaDisplay}>
-                <option value="ASC">Preço: Crescente</option>
-                <option value="DESC">Preço: Decrescente</option>
-                </select>
-              </div>
-              <FiltroOpcao>
-                <img src={require("./img/filterIcon.png")} onClick={this.botaoMostraFiltro}/>
-                <p onClick={this.botaoMostraFiltro}>Filtrar produtos</p>
-                {this.state.limpaPesquisa ? <img src={require("./img/limpapesquisaIcon.svg")} onClick={this.limpaPesquisaInput}/> : ""}
+                <div>
+                  <select onChange={this.organizaDisplay}>
+                  <option value="ASC">Preço: Crescente</option>
+                  <option value="DESC">Preço: Decrescente</option>
+                  </select>
+                </div>
+                <FiltroOpcao>
+                  <img src={require("./img/filterIcon.png")} onClick={this.botaoMostraFiltro}/>
+                  <p onClick={this.botaoMostraFiltro}> {this.state.limpaPesquisa ? "Limpar pesquisa ativa" : "Filtrar produtos"}</p>
+                  {this.state.limpaPesquisa ? <img src={require("./img/limpapesquisaIcon.svg")} onClick={this.limpaPesquisaInput}/> : ""}
+                </FiltroOpcao>
               </FiltroOpcao>
-              </FiltroOpcao>
-              <div>
-              {this.state.mostraFiltro ? filtroContent : ''}
-              </div>
+                <div>
+                {this.state.mostraFiltro ? filtroContent : ''}
+                </div>
             </FiltroPai>
-            <ProdutosDisplay>{this.state.mostraProdutos ? produtosContent : produtosPesquisaContent}</ProdutosDisplay>
-          </LateralEsquerda>
-          <LateralDireita>
-            {this.state.mostraCarrinho ? carrinhoContent : ''}
-          </LateralDireita>
-        </Conteudo>
+            <Divflex>
+              {this.state.mostraProdutos ? produtosContent : produtosPesquisaContent}
+            </Divflex>
+          </div>
+          {this.state.mostraCarrinho ? carrinhoContent : ''}
+        </Divflex>
       </DivPai>
     )
   }
